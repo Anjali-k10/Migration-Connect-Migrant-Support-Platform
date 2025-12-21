@@ -11,6 +11,7 @@ export const registerMigrant = async (req, res) => {
       occupation,
       idType,
       idNumber,
+      profilePhoto,
       emergencyContact
     } = req.body;
 

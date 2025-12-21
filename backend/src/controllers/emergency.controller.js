@@ -1,1 +1,57 @@
-// Emergency controller
+import EmergencyRequest from "../models/EmergencyRequest.js";
+import Migrant from "../models/Migrant.js";
+
+export const createEmergency = async (req, res) => {
+  try {
+    const { migrantId, currentCity, message } = req.body;
+
+    if (!migrantId || !currentCity || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    // check migrant exists
+    const migrant = await Migrant.findOne({ migrantId });
+    if (!migrant) {
+      return res.status(404).json({ error: "Migrant not found" });
+    }
+
+    const emergency = new EmergencyRequest({
+      migrantId,
+      currentCity,
+      message
+    });
+
+    await emergency.save();
+
+    res.status(201).json({
+      message: "Emergency request created",
+      emergencyId: emergency._id
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+export const resolveEmergency = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const emergency = await EmergencyRequest.findById(id);
+
+    if (!emergency) {
+      return res.status(404).json({ error: "Emergency not found" });
+    }
+
+    emergency.status = "resolved";
+    emergency.resolvedAt = new Date();
+
+    await emergency.save();
+
+    res.json({
+      message: "Emergency marked as resolved"
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
