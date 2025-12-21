@@ -59,3 +59,70 @@ export const registerMigrant = async (req, res) => {
   }
 };
 
+export const getMigrantById = async (req, res) => {
+  try {
+    const { migrantId } = req.params;
+
+    const migrant = await Migrant.findOne({ migrantId });
+
+    if (!migrant) {
+      return res.status(404).json({ error: 'Migrant not found' });
+    }
+
+    res.json({
+      migrantId: migrant.migrantId,
+      name: migrant.name,
+      dateOfBirth: migrant.dateOfBirth,
+      homeState: migrant.homeState,
+      currentCity: migrant.currentCity,
+      occupation: migrant.occupation,
+      verified: migrant.verified,
+      emergencyContact: migrant.emergencyContact
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateMigrant = async (req, res) => {
+  try {
+    const { migrantId } = req.params;
+
+    const migrant = await Migrant.findOne({ migrantId });
+    if (!migrant) {
+      return res.status(404).json({ error: 'Migrant not found' });
+    }
+
+    const { name, currentCity, occupation, emergencyContact } = req.body;
+
+    if (name) migrant.name = name;
+    if (currentCity) migrant.currentCity = currentCity;
+    if (occupation) migrant.occupation = occupation;
+    if (emergencyContact) migrant.emergencyContact = emergencyContact;
+
+    await migrant.save();
+
+    res.json({ message: 'Migrant details updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteMigrant = async (req, res) => {
+  try {
+    const { migrantId } = req.params;
+
+    const migrant = await Migrant.findOneAndDelete({ migrantId });
+
+    if (!migrant) {
+      return res.status(404).json({ error: 'Migrant not found' });
+    }
+
+    res.json({ message: 'Migrant record deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
