@@ -52,3 +52,24 @@ export const listHelpCenters = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getCheapestShelters = async (req, res) => {
+  try {
+    const { city } = req.query;
+
+    if (!city) {
+      return res.status(400).json({ error: "City is required" });
+    }
+
+    const shelters = await HelpCenter.find({
+      city,
+      type: "shelter",
+      isActive: true
+    }).sort({ costPerDay: 1 });
+
+    res.json(shelters);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
