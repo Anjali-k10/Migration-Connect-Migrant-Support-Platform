@@ -34,6 +34,16 @@ const helpCenterSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    location: {
+  lat: {
+    type: Number,
+    required: true
+  },
+  lng: {
+    type: Number,
+    required: true
+  }
+},
 
     isActive: {
       type: Boolean,

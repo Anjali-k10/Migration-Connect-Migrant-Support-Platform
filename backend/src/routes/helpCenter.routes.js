@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/add", addHelpCenter);
 router.get("/", listHelpCenters);
 router.get("/cheapest", getCheapestShelters);
+router.get("/nearest", getNearestHelpCenters);
 
 
 export default router;
