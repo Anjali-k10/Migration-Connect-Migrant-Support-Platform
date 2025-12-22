@@ -2,7 +2,7 @@ import EmergencyRequest from "../models/EmergencyRequest.js";
 import Migrant from "../models/Migrant.js";
 
 export const createEmergency = async (req, res) => {
-   console.log("REQ BODY:", req.body); 
+  //  console.log("REQ BODY:", req.body); 
   try {
     const { migrantId, currentCity, message } = req.body;
 

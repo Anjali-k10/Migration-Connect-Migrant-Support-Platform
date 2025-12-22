@@ -151,3 +151,14 @@ export const verifyMigrant = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+export const listMigrants = async (req, res) => {
+  try {
+    const migrants = await Migrant.find().select(
+      "-idHash -__v"
+    );
+
+    res.json(migrants);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
