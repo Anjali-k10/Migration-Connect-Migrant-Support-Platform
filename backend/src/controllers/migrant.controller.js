@@ -127,3 +127,27 @@ export const deleteMigrant = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const verifyMigrant = async (req, res) => {
+  try {
+    const { migrantId } = req.params;
+
+    const migrant = await Migrant.findOne({ migrantId });
+
+    if (!migrant) {
+      return res.status(404).json({ error: "Migrant not found" });
+    }
+
+    if (migrant.verified) {
+      return res.json({ message: "Migrant already verified" });
+    }
+
+    migrant.verified = true;
+    await migrant.save();
+
+    res.json({ message: "Migrant verified successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
