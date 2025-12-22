@@ -55,3 +55,15 @@ export const resolveEmergency = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const listEmergencies = async (req, res) => {
+  try {
+    const emergencies = await EmergencyRequest.find({ status: "pending" })
+      .sort({ createdAt: -1 });
+
+    res.json(emergencies);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
