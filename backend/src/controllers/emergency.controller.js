@@ -2,6 +2,7 @@ import EmergencyRequest from "../models/EmergencyRequest.js";
 import Migrant from "../models/Migrant.js";
 
 export const createEmergency = async (req, res) => {
+   console.log("REQ BODY:", req.body); 
   try {
     const { migrantId, currentCity, message } = req.body;
 
@@ -9,7 +10,7 @@ export const createEmergency = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // check migrant exists
+    
     const migrant = await Migrant.findOne({ migrantId });
     if (!migrant) {
       return res.status(404).json({ error: "Migrant not found" });

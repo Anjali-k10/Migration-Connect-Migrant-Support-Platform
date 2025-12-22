@@ -2,7 +2,8 @@ import express from "express";
 import {
   addHelpCenter,
   listHelpCenters,
-  getCheapestShelters
+  getCheapestShelters,
+    getNearestHelpCenters
 } from "../controllers/helpCenter.controller.js";
 
 const router = express.Router();

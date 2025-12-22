@@ -8,6 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json()); 
+
 app.use("/api/help-centers", helpCenterRoutes);
 app.use("/api/migrants", migrantRoutes);
 app.use("/api/emergency", emergencyRoutes);
