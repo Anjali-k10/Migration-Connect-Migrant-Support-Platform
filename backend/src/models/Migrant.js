@@ -8,6 +8,10 @@ const migrantSchema = new mongoose.Schema({
 	currentCity: { type: String, required: true,trim: true },
 	idType: { type: String, enum: ['Aadhaar', 'VoterID', 'WorkerID'], required: true },
 	idHash: { type: String, required: true },
+	password: {
+  type: String,
+  required: true
+},
     profilePhoto: {
   type: String,
   default: "https://res.cloudinary.com/demo/image/upload/default-profile.png"},

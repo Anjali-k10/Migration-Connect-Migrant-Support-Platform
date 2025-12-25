@@ -43,9 +43,7 @@ export const addHelpCenter = async (req, res) => {
   }
 };
 
-/**
- * List help centers by city and type
- */
+
 export const listHelpCenters = async (req, res) => {
   try {
     const { city, type } = req.query;
@@ -121,6 +119,26 @@ export const getNearestHelpCenters = async (req, res) => {
     res.json(results);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getCheapestFoodCenters = async (req, res) => {
+  try {
+    const { city } = req.query;
+
+    if (!city) {
+      return res.status(400).json({ error: "City is required" });
+    }
+
+    const foodCenters = await HelpCenter.find({
+      city,
+      type: "food",
+      isActive: true
+    }).sort({ costPerDay: 1 });
+
+    res.json(foodCenters);
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

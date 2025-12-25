@@ -1,5 +1,4 @@
 import express from "express";
-console.log("MIGRANT ROUTES LOADED");
 
 import {
   registerMigrant,
@@ -7,23 +6,36 @@ import {
   updateMigrant,
   deleteMigrant,
   verifyMigrant,
-  listMigrants
+  listMigrants,
+  getMyProfile,
+  updateMyProfile
 } from "../controllers/migrant.controller.js";
+
+import { migrantLogin, migrantLogout } from "../controllers/migrantAuth.controller.js";
+import migrantAuth from "../middleware/migrantAuth.middleware.js";
 
 import adminAuth from "../middleware/adminAuth.middleware.js";
 
+
 const router = express.Router();
 
-// Admin only
 router.get("/", adminAuth, listMigrants);
+router.get("/:migrantId", adminAuth, getMigrantById);
+router.put("/:migrantId", adminAuth, updateMigrant);
+router.delete("/:migrantId", adminAuth, deleteMigrant);
 router.put("/verify/:migrantId", adminAuth, verifyMigrant);
 
-// Migrant actions
+
 router.post("/register", registerMigrant);
-router.get("/:migrantId", getMigrantById);
-router.put("/:migrantId", updateMigrant);
-router.delete("/:migrantId", deleteMigrant);
+router.post("/login", migrantLogin);
+
+router.post("/logout", migrantAuth, migrantLogout);
+
+router.get("/me/profile", migrantAuth, getMyProfile);
+router.put("/me/profile", migrantAuth, updateMyProfile);
 
 export default router;
+
+
 
 

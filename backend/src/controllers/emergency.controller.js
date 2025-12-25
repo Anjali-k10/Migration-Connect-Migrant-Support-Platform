@@ -2,18 +2,23 @@ import EmergencyRequest from "../models/EmergencyRequest.js";
 import Migrant from "../models/Migrant.js";
 
 export const createEmergency = async (req, res) => {
-  //  console.log("REQ BODY:", req.body); 
   try {
-    const { migrantId, currentCity, message } = req.body;
+    const migrantId = req.migrant.migrantId;
+    const { currentCity, message } = req.body;
 
-    if (!migrantId || !currentCity || !message) {
+    if (!currentCity || !message) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    
     const migrant = await Migrant.findOne({ migrantId });
     if (!migrant) {
       return res.status(404).json({ error: "Migrant not found" });
+    }
+
+    if (!migrant.verified) {
+      return res.status(403).json({
+        error: "Only verified migrants can create emergency requests"
+      });
     }
 
     const emergency = new EmergencyRequest({
@@ -29,16 +34,15 @@ export const createEmergency = async (req, res) => {
       emergencyId: emergency._id
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
+
 export const resolveEmergency = async (req, res) => {
   try {
     const { id } = req.params;
 
     const emergency = await EmergencyRequest.findById(id);
-
     if (!emergency) {
       return res.status(404).json({ error: "Emergency not found" });
     }
@@ -48,11 +52,8 @@ export const resolveEmergency = async (req, res) => {
 
     await emergency.save();
 
-    res.json({
-      message: "Emergency marked as resolved"
-    });
+    res.json({ message: "Emergency marked as resolved" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -64,7 +65,7 @@ export const listEmergencies = async (req, res) => {
 
     res.json(emergencies);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
+
