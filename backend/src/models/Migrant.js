@@ -6,6 +6,7 @@ const migrantSchema = new mongoose.Schema({
 	dateOfBirth: { type: Date, required: true },
 	homeState: { type: String, required: true,trim: true },
 	currentCity: { type: String, required: true,trim: true },
+	occupation: { type: String, trim: true },
 	idType: { type: String, enum: ['Aadhaar', 'VoterID', 'WorkerID'], required: true },
 	idHash: { type: String, required: true },
 	password: {

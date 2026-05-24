@@ -1,60 +1,72 @@
 # Migrant Connect
-Migrant Connect is a platform designed to support migrants by connecting them with essential services, resources, and local communities. The project aims to empower migrants by bridging the gap between their immediate needs and the opportunities available in their new environment.
 
-✨ Features
+A platform that helps migrants find shelters, food centers, NGOs, government schemes, and emergency support.
 
-🔎 Resource Discovery – Access information on jobs, healthcare, education, and housing.
+## Quick start (frontend + backend together)
 
-🤝 Community Connections – Connect with local communities and support groups.
+```bash
+cd Migration-Connect-Migrant-Support-Platform
+npm run install:all
+npm run dev
+```
 
-📍 Location-based Services – Find nearby essential facilities like hospitals, schools, and shelters.
+This starts **both** servers:
 
-🌐 Multi-language Support – Available in multiple languages for inclusivity.
+| Service  | URL |
+|----------|-----|
+| Frontend | http://127.0.0.1:5173 |
+| Backend API | http://127.0.0.1:5001/api |
+| Health check | http://127.0.0.1:5001/api/health |
 
-🔒 Secure & Private – Data protection for all users.
+The frontend proxies `/api` → backend, so login, registration, help centers, and emergency requests work from the UI.
 
-🛠️ Tech Stack
+## How integration works
 
-Frontend: React.js
+- **Development:** Vite (`frontend`) proxies `/api/*` to Express (`backend`). Cookies are sent with `credentials: "include"`.
+- **Production (single server):** `npm run start:integrated` builds the frontend and serves it from the backend on port 5001.
+- **Production (split):** Set `VITE_API_BASE_URL=http://your-api-host/api` when building the frontend.
 
-Backend: Node.js / Express.js
+## API endpoints used by the UI
 
-Database: MongoDB
+| Feature | Method | Endpoint |
+|---------|--------|----------|
+| Register | POST | `/api/migrants/register` |
+| Login | POST | `/api/migrants/login` |
+| Profile | GET | `/api/migrants/me/profile` |
+| Update profile | PUT | `/api/migrants/me/profile` |
+| Help centers | GET | `/api/help-centers` |
+| Nearest centers | GET | `/api/help-centers/nearest?lat=&lng=` |
+| Emergency | POST | `/api/emergency/create` |
+| Health | GET | `/api/health` |
 
-APIs & Integrations: Google Maps API
+## Environment
 
-Other Tools: Git, GitHub, VS Code
+**Backend** (`backend/.env`):
 
-🚀 Getting Started Prerequisites
+```
+PORT=5001
+MONGO_URI=memory
+JWT_SECRET=your-secret
+CLIENT_URL=http://localhost:5173,http://127.0.0.1:5173
+SERVE_CLIENT=false
+```
 
-Make sure you have installed:
+**Frontend** (`frontend/.env.development`):
 
-Node.js
+```
+VITE_API_BASE_URL=/api
+VITE_PROXY_TARGET=http://127.0.0.1:5001
+```
 
-Git
+For a real database, set `MONGO_URI` to your MongoDB connection string.
 
-Package manager (npm or yarn)
+## Troubleshooting
 
-Installation
+- **Yellow banner “Backend is offline”** — run `npm run dev` from the project root (or `npm run dev:backend` in another terminal).
+- **UI looks old** — open http://127.0.0.1:5173 and hard-refresh (`Cmd+Shift+R`).
+- **CORS errors** — add your frontend URL to `CLIENT_URL` in `backend/.env`.
 
-Clone the repository:
+## Tech stack
 
-git clone https://github.com/Sona30k/GloLocal_migratant_connect.git
-
-Navigate into the project folder:
-
-cd GloLocal_migratant_connect
-
-Install dependencies:
-
-npm install
-
-Start the development server:
-
-npm start
-
-📌 Usage
-
-Sign up or log in as a migrant or local volunteer.
-
-Browse services, resources, and community events.
+- Frontend: React, Vite, Tailwind CSS, Framer Motion
+- Backend: Node.js, Express, MongoDB (in-memory for local dev)

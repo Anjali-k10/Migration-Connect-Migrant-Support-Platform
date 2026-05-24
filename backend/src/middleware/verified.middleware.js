@@ -2,10 +2,10 @@ import Migrant from "../models/Migrant.js";
 
 const checkVerifiedMigrant = async (req, res, next) => {
   try {
-    const { migrantId } = req.body;
+    const migrantId = req.migrant?.migrantId;
 
     if (!migrantId) {
-      return res.status(400).json({ error: "Migrant ID required" });
+      return res.status(401).json({ error: "Authentication required" });
     }
 
     const migrant = await Migrant.findOne({ migrantId });

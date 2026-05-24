@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserPlus } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import AuthCard from "../components/ui/AuthCard.jsx";
@@ -21,6 +21,7 @@ const initial = {
 
 export default function Register() {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState(initial);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(null);
@@ -37,6 +38,7 @@ export default function Register() {
       const result = await register(form);
       setSuccess(result.migrantId);
       setForm(initial);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -49,10 +51,10 @@ export default function Register() {
       <AuthCard title="Join Migrant Connect" subtitle="Register securely — save your migrant ID">
         {success && (
           <div className="mb-6 rounded-xl bg-emerald-50 px-4 py-4 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200">
-            Registration successful. Your ID:{" "}
+            Account created and you&apos;re signed in. Your migrant ID:{" "}
             <strong className="font-mono">{success}</strong>
-            <Link to="/login" className="ml-2 font-semibold underline">
-              Log in
+            <Link to="/dashboard" className="ml-2 font-semibold underline">
+              Go to dashboard
             </Link>
           </div>
         )}

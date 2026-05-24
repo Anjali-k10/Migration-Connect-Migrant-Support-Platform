@@ -1,8 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import { ApiProvider } from "./context/ApiContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import Navbar from "./components/common/Navbar.jsx";
 import Footer from "./components/common/Footer.jsx";
+import BackendBanner from "./components/common/BackendBanner.jsx";
 import Loader from "./components/common/Loader.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
@@ -25,6 +27,7 @@ function AppShell() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <BackendBanner />
       <Navbar />
       <main className={isHome ? "flex-1" : "flex-1 bg-slate-50 dark:bg-slate-950"}>
         <Routes>
@@ -61,9 +64,11 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <AuthProvider>
-          <AppShell />
-        </AuthProvider>
+        <ApiProvider>
+          <AuthProvider>
+            <AppShell />
+          </AuthProvider>
+        </ApiProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

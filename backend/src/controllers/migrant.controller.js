@@ -46,7 +46,7 @@ export const registerMigrant = async (req, res) => {
       idHash,
       password: hashedPassword,
       emergencyContact,
-      verified: false
+      verified: process.env.MONGO_URI === "memory"
     });
 
     await migrant.save();

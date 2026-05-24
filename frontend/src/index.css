@@ -1,5 +1,68 @@
-/* Main CSS file */
-body {
-  margin: 0;
-  font-family: sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 font-sans text-slate-800 antialiased transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/20 bg-white/70 shadow-soft backdrop-blur-xl;
+  }
+
+  .dark .glass {
+    @apply border-slate-700/50 bg-slate-900/70;
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-slate-200/80 bg-white/80 shadow-card backdrop-blur-md transition-all duration-300;
+  }
+
+  .dark .glass-card {
+    @apply border-slate-700/60 bg-slate-900/80;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-600 via-brand-500 to-emerald-400 bg-clip-text text-transparent;
+  }
+
+  .dark .text-gradient {
+    @apply from-brand-300 via-teal-300 to-emerald-300;
+  }
+
+  .section-padding {
+    @apply px-4 py-16 sm:px-6 lg:px-8 lg:py-24;
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      rgb(226 232 240 / 0.4) 0%,
+      rgb(226 232 240 / 0.9) 50%,
+      rgb(226 232 240 / 0.4) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+  }
+
+  .dark .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      rgb(51 65 85 / 0.4) 0%,
+      rgb(71 85 105 / 0.9) 50%,
+      rgb(51 65 85 / 0.4) 100%
+    );
+    background-size: 200% 100%;
+  }
 }

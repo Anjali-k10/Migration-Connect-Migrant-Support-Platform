@@ -1,12 +1,17 @@
 import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./config/db.js";
+import { seedDatabase } from "./utils/seed.js";
 import { cleanupResolvedEmergencies } from "./utils/cleanupResolvedEmergencies.js";
 
 dotenv.config();
 
+const start = async () => {
+  await connectDB();
+  await seedDatabase();
+};
 
-connectDB();
+start();
 setInterval(() => {
   cleanupResolvedEmergencies();
 }, 60 * 60 * 1000);

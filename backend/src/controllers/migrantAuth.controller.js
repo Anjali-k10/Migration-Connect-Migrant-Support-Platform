@@ -1,6 +1,7 @@
 import Migrant from "../models/Migrant.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { migrantCookieOptions } from "../config/cookies.js";
 
 export const migrantLogin = async (req, res) => {
   try {
@@ -26,23 +27,20 @@ export const migrantLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.cookie("migrant_token", token, {
-      httpOnly: true,
-      maxAge: 2 * 60 * 60 * 1000,
-      sameSite: "strict"
-    });
+    res.cookie("migrant_token", token, migrantCookieOptions);
 
-    res.json({ message: "Login successful" });
+    res.json({
+      message: "Login successful",
+      migrantId: migrant.migrantId,
+      verified: migrant.verified
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 export const migrantLogout = (req, res) => {
-  res.clearCookie("migrant_token", {
-    httpOnly: true,
-    sameSite: "strict"
-  });
+  res.clearCookie("migrant_token", migrantCookieOptions);
 
   res.json({ message: "Logged out successfully" });
 };
