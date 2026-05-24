@@ -60,6 +60,18 @@ VITE_PROXY_TARGET=http://127.0.0.1:5001
 
 For a real database, set `MONGO_URI` to your MongoDB connection string.
 
+## Pushing to GitHub
+
+```bash
+git fetch origin
+git pull --rebase origin main
+git push origin main
+```
+
+If push fails (403, auth, or non-fast-forward), see **[docs/PUSHING.md](docs/PUSHING.md)**.
+
+Current remote: `Anjali-k10/Migration-Connect-Migrant-Support-Platform` — you must have write access or push to your own fork.
+
 ## Troubleshooting
 
 - **Yellow banner “Backend is offline”** — run `npm run dev` from the project root (or `npm run dev:backend` in another terminal).
